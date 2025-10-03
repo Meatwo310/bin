@@ -62,12 +62,19 @@ echo "$FILE_TYPE"
 case "$FILE_TYPE" in
     *"ELF"*)
         psubheader "Executable (ELF) Analysis"
+        
         pcommand "Running 'strings' to find printable characters"
         strings "$TARGET_FILE"
         pcommand "Running 'readelf -h' for header information"
         readelf -h "$TARGET_FILE"
         pcommand "Running 'pwn checksec' for security properties"
         pwn checksec "$TARGET_FILE"
+        pcommand "Running 'objdump -f' for file architecture"
+        objdump -f "$TARGET_FILE"
+        pcommand "Running 'objdump -t' for symbol table"
+        objdump -t "$TARGET_FILE"
+        # pcommand "Running 'objdump -d -M intel' for disassembly (first 30 lines)"
+        # objdump -d -M intel "$TARGET_FILE" | head -n 30
         ;;
 
     *"ASCII text"*)
@@ -127,5 +134,4 @@ case "$FILE_TYPE" in
 esac
 
 pheader "Investigation Complete"
-
 
