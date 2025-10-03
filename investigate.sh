@@ -65,6 +65,8 @@ case "$FILE_TYPE" in
         objdump -f "$TARGET_FILE"
         pcommand "Running 'objdump -t' for symbol table"
         objdump -t "$TARGET_FILE"
+        pcommand "Running 'objdump -R' for dynamic relocation entries"
+        objdump -R "$TARGET_FILE"
         # pcommand "Running 'objdump -d -M intel' for disassembly (first 30 lines)"
         # objdump -d -M intel "$TARGET_FILE" | head -n 30
         ;;
