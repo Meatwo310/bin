@@ -59,8 +59,6 @@ case "$FILE_TYPE" in
         strings "$TARGET_FILE"
         pcommand "Running 'readelf -h' for header information"
         readelf -h "$TARGET_FILE"
-        pcommand "Running 'pwn checksec' for security properties"
-        pwn checksec "$TARGET_FILE"
         pcommand "Running 'objdump -f' for file architecture"
         objdump -f "$TARGET_FILE"
         pcommand "Running 'objdump -t' for symbol table"
@@ -69,6 +67,8 @@ case "$FILE_TYPE" in
         objdump -R "$TARGET_FILE"
         pcommand "Showing asm of main with 'r2'"
         r2 -q -c 'aaa; pdf @ main' "$TARGET_FILE"
+        pcommand "Running 'pwn checksec' for security properties"
+        pwn checksec "$TARGET_FILE"
         ;;
 
     *"ASCII text"*)
