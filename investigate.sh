@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# =============================================================================
-#  Universal File Investigator for CTF (Refactored Version)
-#
-#  Usage: ./investigate.sh <target_file>
-#
-#  This script identifies the file type and runs appropriate analysis commands.
-# =============================================================================
-
 # --- Color Definitions ---
 BLUE='\033[1;34m'
 GREEN='\033[1;32m'
