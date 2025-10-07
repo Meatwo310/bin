@@ -56,7 +56,7 @@ case "$FILE_TYPE" in
         psubheader "Executable (ELF) Analysis"
         
         pcommand "Running 'strings' to find printable characters"
-        strings "$TARGET_FILE"
+        strings "$TARGET_FILE" | head -n 200
         pcommand "Running 'readelf -h' for header information"
         readelf -h "$TARGET_FILE"
         pcommand "Running 'objdump -f' for file architecture"
@@ -121,7 +121,7 @@ case "$FILE_TYPE" in
         psubheader "Generic Analysis"
         echo "File type not specifically handled. Running generic commands."
         pcommand "Running 'strings' to find printable characters"
-        strings "$TARGET_FILE"
+        strings "$TARGET_FILE" | head -n 200
         pcommand "Running 'hexdump' to view the first 256 bytes"
         hexdump -C "$TARGET_FILE" | head -n 16
         ;;
