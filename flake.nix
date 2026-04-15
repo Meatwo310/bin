@@ -35,7 +35,9 @@
             zsteg
             wireshark-cli # capinfos, tshark
             coreutils     # cat, wc, hexdump
-          ];
+          ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin (with pkgs; [
+            darwin.cctools # otool, nm on Darwin
+          ]);
           text = readScript ./scripts/dataknife.sh;
         };
 

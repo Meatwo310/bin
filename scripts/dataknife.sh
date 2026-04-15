@@ -80,7 +80,7 @@ echo "$FILE_TYPE"
 case "$FILE_TYPE" in
     *"ELF"*)
         psubheader "Executable (ELF) Analysis"
-        
+
         pcommand "Running 'strings' to find printable characters"
         strings "$TARGET_FILE" | head -n 200 || true
         pcommand "Running 'readelf -h' for header information"
@@ -95,6 +95,23 @@ case "$FILE_TYPE" in
         r2 -q -c 'aaa; pdf @ main' "$TARGET_FILE"
         pcommand "Running 'pwn checksec' for security properties"
         pwn checksec "$TARGET_FILE"
+        ;;
+
+    *"Mach-O"*)
+        psubheader "Executable (Mach-O) Analysis"
+
+        pcommand "Running 'strings' to find printable characters"
+        strings "$TARGET_FILE" | head -n 200 || true
+        pcommand "Running 'otool -h' for Mach-O header"
+        otool -h "$TARGET_FILE"
+        pcommand "Running 'otool -L' for shared library dependencies"
+        otool -L "$TARGET_FILE"
+        pcommand "Running 'otool -l' for load commands"
+        otool -l "$TARGET_FILE"
+        pcommand "Running 'nm' for symbol table"
+        nm "$TARGET_FILE" 2>/dev/null | head -n 100 || true
+        pcommand "Showing asm of main with 'r2'"
+        r2 -q -c 'aaa; pdf @ main' "$TARGET_FILE" || true
         ;;
 
     *"ASCII text"*)
