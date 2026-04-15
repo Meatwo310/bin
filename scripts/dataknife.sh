@@ -38,8 +38,34 @@ fi
 
 TARGET_FILE="$1"
 
-if [ ! -f "$TARGET_FILE" ]; then
+if [ ! -e "$TARGET_FILE" ]; then
     perror "File not found: '$TARGET_FILE'"
+    exit 1
+fi
+
+# Resolve symlinks with depth limit
+MAX_SYMLINK_DEPTH=10
+if [ -L "$TARGET_FILE" ]; then
+    pheader "Resolving symlink: $TARGET_FILE"
+    depth=0
+    while [ -L "$TARGET_FILE" ]; do
+        if [ "$depth" -ge "$MAX_SYMLINK_DEPTH" ]; then
+            perror "Symlink depth limit ($MAX_SYMLINK_DEPTH) reached. Possible circular reference."
+            exit 1
+        fi
+        link_target=$(readlink "$TARGET_FILE")
+        if [[ "$link_target" != /* ]]; then
+            link_target="$(dirname "$TARGET_FILE")/$link_target"
+        fi
+        echo "  $TARGET_FILE -> $link_target"
+        TARGET_FILE="$link_target"
+        depth=$((depth + 1))
+    done
+    echo "Resolved: $TARGET_FILE"
+fi
+
+if [ ! -f "$TARGET_FILE" ]; then
+    perror "Resolved target is not a regular file: '$TARGET_FILE'"
     exit 1
 fi
 
