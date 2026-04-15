@@ -32,7 +32,7 @@ perror() {
 
 # 1. Check for Input
 if [ "$#" -ne 1 ]; then
-    perror "Usage: $0 <target_file>"
+    perror "Usage: ${0##*/} <target_file>"
     exit 1
 fi
 
